@@ -28,10 +28,10 @@ function handleSubmit(event) {
   event.preventDefault();
 
   // Do all the things ...
-  cart.saveToLocalStorage();
-  updateCounter();
   updateCartPreview();
   addSelectedItemToCart();
+  updateCounter();
+  cart.saveToLocalStorage();
   
 }
 
@@ -44,7 +44,7 @@ function addSelectedItemToCart() {
   var selectedQuantity = document.getElementById('quantity');
   var itemQuantity = selectedQuantity.value;
   // TODO: using those, add one item to the Cart
-  if (itemValue && parseInt(itemQuantity) > 0) {
+  if (parseInt(itemQuantity) > 0) {
     cart.addItem(itemValue, itemQuantity);
     selectedQuantity.value = null;
   }
@@ -52,32 +52,36 @@ function addSelectedItemToCart() {
 
 // TODO: Update the cart count in the header nav with the number of items in the Cart
 function updateCounter() {
-  var itemCountEl = document.getElementById('itemCount');
-  itemCountEl.textContent = ' ' + cart.items.length;
+  if (cart.items.length > 0) {
+    var itemCountEl = document.getElementById('itemCount');
+    itemCountEl.textContent = ' ' + cart.items.length;
+  }
 }
 
 // TODO: As you add items into the cart, show them (item & quantity) in the cart preview div
 function updateCartPreview() {
   // TODO: Get the item and quantity from the form 
-  var selectedItem = document.getElementById('items');
-  var itemValue = selectedItem.value;
-  var selectedQuantity = document.getElementById('quantity');
-  var itemQuantity = selectedQuantity.value;
+  var selectedItemEl = document.getElementById('items');
+  var itemValue = selectedItemEl.value;
+  var selectedQuantityEl = document.getElementById('quantity');
+  var itemQuantity = selectedQuantityEl.value;
   // TODO: Add a new element to the cartContents div with that information
   var cartContentsEl = document.getElementById('cartContents');
-
+  
   var itemPreviewEl = document.createElement('p');
   var quantityPreviewEl = document.createElement('p');
   var breakEl = document.createElement('br'); // temporary solution, possibly;
-
-  itemPreviewEl.textContent = 'Item: ' + itemValue;
-  quantityPreviewEl.textContent = 'Amount: ' + itemQuantity;
-
-  cartContentsEl.appendChild(itemPreviewEl);
-  cartContentsEl.appendChild(breakEl);
-  cartContentsEl.appendChild(quantityPreviewEl);
-  cartContentsEl.appendChild(breakEl);
-  cartContentsEl.appendChild(breakEl);
+  
+  if (itemQuantity !== NaN && parseInt(itemQuantity) > 0) {
+    itemPreviewEl.textContent = 'Item: ' + itemValue;
+    quantityPreviewEl.textContent = 'Amount: ' + itemQuantity;
+    
+    cartContentsEl.appendChild(itemPreviewEl);
+    cartContentsEl.appendChild(breakEl);
+    cartContentsEl.appendChild(quantityPreviewEl);
+    cartContentsEl.appendChild(breakEl);
+    cartContentsEl.appendChild(breakEl);
+  }
 }
 
 // Set up the "submit" event listener on the form.
