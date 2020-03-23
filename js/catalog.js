@@ -2,12 +2,15 @@
 'use strict';
 
 // Set up an empty cart for use on this page.
-var cart = new Cart([]);
+// From Class: Persistent Cart
+var cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+var cart = new Cart(cartItems);
+// var cart = new Cart([]);
 
 // On screen load, we call this method to put all of the busmall options
 // (the things in the Product.allProducts array) into the drop down list.
 function populateForm() {
-
+  updateCounter()
   //TODO: Add an <option> tag inside the form's select for each product
   var selectElement = document.getElementById('items');
   for (var i in Product.allProducts) {
